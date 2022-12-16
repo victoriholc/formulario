@@ -1,0 +1,56 @@
+<div class="container">
+  
+  {{ cliente | json }}
+
+  <div class="alert alert-danger" *ngIf="showAlertError()">
+    Preencha todos os campos corretamente.
+  </div>
+  <div class="alert alert-success" *ngIf="showAlertSuccess()">
+    Usuário salvo com sucesso.
+  </div>
+
+  <form #usuarioForm="ngForm" (ngSubmit)="salvar(usuarioForm)" (input)="setHasSubmited()">
+    <div class="mb-3">
+      <label class="form-label">Nome</label>
+      <input type="text" class="form-control" name="nome" [(ngModel)]="cliente.nome" required minlength="10" #inputNomeModel="ngModel" [class.is-invalid]="(getIsInputNomeValid() || getIsInputNomeLengthValid()) && inputNomeModel.touched">
+
+      <div *ngIf="getIsInputNomeValid() && inputNomeModel.touched" class="invalid-feedback">Informe um nome</div>
+      <div *ngIf="getIsInputNomeLengthValid() && inputNomeModel.touched" class="invalid-feedback">O nome deve possuir pelo menos 10 caracteres</div>
+      <!-- 
+      Touched (entrou e saiu do campo): {{inputNomeModel.touched}}
+      <br>
+      Pristine (campo não foi alterado): {{inputNomeModel.pristine}}
+      <br>
+      Dirty (campo foi alterado): {{inputNomeModel.dirty}}
+      <br> -->
+
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">E-mail</label>
+      <input type="text" class="form-control" name="email" [(ngModel)]="cliente.email" required email #inputEmailModel="ngModel" [class.is-invalid]="getIsInputEmailValid() && inputEmailModel.touched">
+      <div *ngIf="getIsInputEmailValid() && inputEmailModel.touched" class="invalid-feedback">Informe um email válido</div>
+      <!-- invalid : {{inputEmailModel.invalid}} -->
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Profissão</label>
+      <select class="form-control" name="profissao" [(ngModel)]="cliente.profissao" required #selectProfissaoModel="ngModel" [class.is-invalid]="getIsSelectProfissaoValid() && selectProfissaoModel.touched">
+        <option value="">Selecione</option>
+        <option *ngFor="let profissao of profissoes" [value]="profissao">{{ profissao }}</option>
+      </select>
+      <div *ngIf="getIsSelectProfissaoValid() && selectProfissaoModel.touched" class="invalid-feedback">Informe uma profissão</div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <!-- <br>
+    1 (select length): {{selectProfissaoModel.value?.length}}
+    <br>
+    2 (select touched): {{selectProfissaoModel.touched}}
+    <br>
+    3 (select pristine): {{selectProfissaoModel.pristine}}
+    <br> -->
+    <!-- {{ buttonS.na.pristine }} -->
+  </form>
+  
+</div>

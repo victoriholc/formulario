@@ -1,0 +1,59 @@
+<div class="container">
+  
+    {{ cliente | json }}
+  
+    <br>
+    <br>
+  
+    <div class="alert alert-danger" *ngIf="usuarioForm.invalid && usuarioForm.dirty">
+      Preencha todos os campos corretamente.
+    </div>
+    <div class="alert alert-success" *ngIf="usuarioForm.valid">
+      Usuário salvo com sucesso.
+    </div>
+  
+    <form #usuarioForm="ngForm" (ngSubmit)="salvar(usuarioForm)">
+      <div class="mb-3">
+        <label class="form-label">Nome</label>
+        <input type="text" class="form-control" name="nome" [(ngModel)]="cliente.nome" required minlength="10" #inputNomeModel="ngModel" [class.is-invalid]="inputNomeModel.invalid && inputNomeModel.touched">
+  
+        <div *ngIf="inputNomeModel.hasError('required') && inputNomeModel.touched" class="invalid-feedback">Informe um nome</div>
+        <div *ngIf="inputNomeModel.hasError('minlength') && inputNomeModel.touched" class="invalid-feedback">O nome deve possuir pelo menos 10 caracteres</div>
+        <!-- 
+        Touched (entrou e saiu do campo): {{inputNomeModel.touched}}
+        <br>
+        Pristine (campo não foi alterado): {{inputNomeModel.pristine}}
+        <br>
+        Dirty (campo foi alterado): {{inputNomeModel.dirty}}
+        <br> -->
+  
+      </div>
+  
+      <div class="mb-3">
+        <label class="form-label">E-mail</label>
+        <input type="text" class="form-control" name="email" [(ngModel)]="cliente.email" required email #inputEmailModel="ngModel" [class.is-invalid]="inputEmailModel.invalid && inputEmailModel.touched">
+        <div *ngIf="inputEmailModel.invalid && inputEmailModel.touched" class="invalid-feedback">Informe um email válido</div>
+        <!-- invalid : {{inputEmailModel.invalid}} -->
+      </div>
+  
+      <div class="mb-3">
+        <label class="form-label">Profissão</label>
+        <select class="form-control" name="profissao" [(ngModel)]="cliente.profissao" required #selectProfissaoModel="ngModel" [class.is-invalid]="selectProfissaoModel.invalid && selectProfissaoModel.touched">
+          <option value="">Selecione</option>
+          <option *ngFor="let profissao of profissoes" [value]="profissao">{{ profissao }}</option>
+        </select>
+        <div *ngIf="selectProfissaoModel.invalid && selectProfissaoModel.touched" class="invalid-feedback">Informe uma profissão</div>
+      </div>
+  
+      <button type="submit" class="btn btn-primary">Salvar</button>
+      <!-- <br>
+      1 (select length): {{selectProfissaoModel.value?.length}}
+      <br>
+      2 (select touched): {{selectProfissaoModel.touched}}
+      <br>
+      3 (select pristine): {{selectProfissaoModel.pristine}}
+      <br> -->
+      <!-- {{ buttonS.na.pristine }} -->
+    </form>
+    
+  </div>
